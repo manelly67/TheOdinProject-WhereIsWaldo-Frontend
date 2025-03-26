@@ -1,0 +1,44 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`display DrawingBoard > display the page when location.state is null 1`] = `
+<div>
+  <div
+    class="bar"
+  >
+    <div>
+      <button
+        class="themeButton"
+      >
+        <img
+          alt="theme-light-dark"
+          class="iconImg"
+          height="30px"
+          src="/src/assets/theme-light-dark.png"
+          width="30px"
+        />
+      </button>
+    </div>
+    <div
+      class="setOfLinks"
+    >
+      <a
+        data-discover="true"
+        href="/"
+        style="font-size: 1.3rem;"
+      >
+        HOME
+      </a>
+    </div>
+  </div>
+  <div>
+    <div>
+      <p>
+        loading
+      </p>
+      <p>
+        Dear user, this is a study project, please wait 1 minute for the server to wake up.
+      </p>
+    </div>
+  </div>
+</div>
+`;
