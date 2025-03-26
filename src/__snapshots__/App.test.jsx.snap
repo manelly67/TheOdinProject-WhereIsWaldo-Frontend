@@ -1,0 +1,34 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`App Component > display the page 1`] = `
+<div>
+  <button
+    class="themeButton"
+  >
+    <img
+      alt="theme-light-dark"
+      class="iconImg"
+      height="30px"
+      src="/src/assets/theme-light-dark.png"
+      width="30px"
+    />
+  </button>
+  <h1>
+    Where is Waldo - The Game
+  </h1>
+  <div
+    class="setOfButtons"
+  >
+    <button>
+      <h3>
+        Waldo In The Galactic City
+      </h3>
+    </button>
+    <button>
+      <h3>
+        Another image
+      </h3>
+    </button>
+  </div>
+</div>
+`;

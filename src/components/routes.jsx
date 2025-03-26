@@ -1,5 +1,6 @@
 import App from "../App";
 import ErrorPage from "./Error_page";
+import DrawingBoard from "./DrawingBoard";
 
 const routes = [
   {
@@ -8,6 +9,10 @@ const routes = [
     element: <App />,
 
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "board",
+    element: <DrawingBoard />,
   },
 ];
 

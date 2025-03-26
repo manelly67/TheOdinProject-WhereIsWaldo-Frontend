@@ -1,6 +1,9 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./App.css";
+import ToggleTheme from "./components/ToggleTheme";
+
+let didInit = false;
 
 function App() {
   const titleDiv = document.querySelector("title");
@@ -8,41 +11,49 @@ function App() {
     titleDiv.textContent = "WHERE IS WALDO";
   }
 
-  const [theme, setTheme] = useState('light');
-  const body = document.querySelector('body')
-  if (body) {
-    document.body.className = theme;
-  }
- 
+  const navigate = useNavigate();
   const name_game_1 = "Waldo In The Galactic City";
   const name_game_2 = "Another image";
+  const [playerId, setPlayerId] = useState(null);
+  const [playerName, setPlayerName] = useState(null);
+  const player = playerId === null ? null : { id: playerId, name: playerName };
 
-  function toggleTheme() {
-    const newTheme = body.className === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-  }
- 
+  useEffect(() => {
+    if (!didInit) {
+      didInit = true;
+      // ✅ Only runs once per app load
+      const id = crypto.randomUUID();
+      setPlayerId(id);
+      setPlayerName("anonymous");
+    }
+  }, []);
+
+  console.log(player);
+
   return (
     <>
-      <button className="themeButton"
-      onClick={() => {
-       toggleTheme();
-      }}>
-        <img
-          src="/src/assets/theme-light-dark.png"
-          alt="theme-light-dark"
-          className="iconImg"
-          width="30px"
-          height="30px"
-        ></img>
-      </button>
+      <ToggleTheme theme="light" />
       <h1>Where is Waldo - The Game</h1>
 
       <div className="setOfButtons">
-        <button>
+        <button
+          onClick={() => {
+            navigate("/board", {
+              replace: true,
+              state: { player: player, gameName: name_game_1 },
+            });
+          }}
+        >
           <h3>{name_game_1}</h3>
         </button>
-        <button>
+        <button
+          onClick={() => {
+            navigate("/board", {
+              replace: true,
+              state: { player: player, gameName: name_game_2 },
+            });
+          }}
+        >
           <h3>{name_game_2}</h3>
         </button>
       </div>

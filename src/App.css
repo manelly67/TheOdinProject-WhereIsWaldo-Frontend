@@ -2,7 +2,7 @@ body {
   color: var(--color-base-text);
   background-color: var(--color-bg-first);
 }
-
+ 
 
 #root {
   max-width: 1280px;
@@ -25,6 +25,43 @@ body {
   width: auto;
 }
 
+
+@media (max-width: 770px) {
+ .bar {
+  position: absolute;
+  top: 4%;
+  width: 300px;
+  display: grid;
+  grid-template-rows: 40px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 2fr;
+
+ }
+ .themeButton{
+  grid-row: 1;
+  grid-column-start: 5;
+  grid-column-end: 6;
+ }
+
+.setOfLinks{
+  grid-row: 1;
+  grid-column-start: 1;
+  grid-column-end:3;
+  }
+
+}
+
+
+.setOfLinks {
+  position: absolute;
+  top: 15%;
+  right: 3%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 3px;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -35,11 +72,34 @@ button {
   background-color: var(--color-bg-button);
   cursor: pointer;
   transition: border-color 0.25s;
+  transition: transform 250ms ease-in-out;
 }
 button:hover {
   border-color: #84cc16;
+  transform: scale(1.02);
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+
+.themeButton {
+  position: absolute;
+  top: 4%;
+  right: 3%;
+  z-index: 1;
+  padding: 0.3em 0.9em;
+
+  transition: transform 250ms ease-in-out;
+}
+
+.themeButton:hover {
+  transform: scale(1.1);
+ 
+}
+
+.themeButton:active {
+  transform: scale(1.1);
+ 
 }

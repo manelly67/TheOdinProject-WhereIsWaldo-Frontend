@@ -3,6 +3,7 @@
   --color-bg-first: #ecfccb;
   --color-base-text: #1a2e05;
   --color-bg-button: #a3e635;
+  --color-text-a-link: #84cc16;
   
 }
 
@@ -10,7 +11,7 @@
   --color-bg-first: #052e16;
   --color-base-text: #ecfccb;
   --color-bg-button: #4d7c0f;
- 
+  --color-text-a-link: #bef264;
 }
 
 :root {
@@ -26,11 +27,11 @@
 
 a {
   font-weight: 500;
-  color: #84cc16;
+  color: var(--color-text-a-link);
   text-decoration: inherit;
 }
 a:hover {
-  color: #65a30d;
+  color: #86efac;
 }
 
 body {
@@ -54,24 +55,4 @@ h2 {
 h3 {
   font-size: 1.7em;
   line-height: 1;
-}
-
-.themeButton {
-  position: absolute;
-  top: 4%;
-  right: 3%;
-  z-index: 1;
-  padding: 0.3em 0.9em;
-
-  transition: transform 250ms ease-in-out;
-}
-
-.themeButton:hover {
-  transform: scale(1.1);
- 
-}
-
-.themeButton:active {
-  transform: scale(1.1);
- 
 }
