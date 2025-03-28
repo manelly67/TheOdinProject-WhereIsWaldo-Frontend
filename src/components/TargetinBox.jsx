@@ -4,8 +4,9 @@ import { mdiFocusField } from '@mdi/js';
 
 const TargetingBox = () => {
 
-    render(
-    <Icon path={mdiFocusField} size={1} />
+   
+    return(
+        <Icon path={mdiFocusField} size={1} />
     );
 
 

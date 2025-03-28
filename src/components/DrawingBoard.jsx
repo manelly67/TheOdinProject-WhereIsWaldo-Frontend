@@ -4,13 +4,17 @@ import { Outlet, useLocation } from "react-router-dom";
 import ToggleTheme from "./ToggleTheme";
 import mock_data_1 from "../mock_data";
 import styles from "../Box.module.css";
+import TargetingBox from "./TargetinBox";
+import DropdownMenu from "./DropdownMenu";
+import { moveToCoord, clickInsideImg } from "./coord";
 
 const DrawingBoard = () => {
-  const { box } = styles;
+  const { box, placeMenu } = styles;
   const titleDiv = document.querySelector("title");
 
   const location = useLocation();
   const [initial, setInitial] = useState(false);
+  const [clickImg, setClickImg] = useState(false);
   const [player, setPlayer] = useState(null);
   const [gameName, setGameName] = useState(null);
   const [responseData, setResponseData] = useState("{}");
@@ -20,7 +24,14 @@ const DrawingBoard = () => {
   const [height, setHeight] = useState(window.innerHeight);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [endcoords, setEndcoords] = useState({ x: 0, y: 0 });
+  const [W, setW] = useState(0);
+  const [H, setH] = useState(0);
+
   const [tagginCoords, setTagginCoords] = useState({ x: 0, y: 0 });
+  console.log(coords);
+  console.log(endcoords);
+  console.log(width, "-", height);
+  console.log(W, "-", H);
   console.log(tagginCoords);
 
   if (titleDiv) {
@@ -42,19 +53,26 @@ const DrawingBoard = () => {
     }
   }, [location.state]);
 
-  const getImgCoord = useCallback(() => {
-    const imageRef = document.getElementById(`${gameName}`);
-    if (imageRef) {
-      const rect = imageRef.getBoundingClientRect();
-      setCoords({ x: rect.left, y: rect.top });
-      setEndcoords({ x: rect.right, y: rect.bottom });
-    }
-  }, [gameName]);
-
   async function getData(mock_data_1) {
     setResponseData(mock_data_1);
     setImgSource(mock_data_1.picture.src_image);
   }
+
+  const getImgCoord = useCallback(() => {
+    const imageRef = document.getElementById(`${gameName}`);
+    if (imageRef) {
+      const rect = imageRef.getBoundingClientRect();
+      setCoords({ x: Number(rect.left.toFixed(4)), y: Number(rect.top.toFixed(4)) });
+      setEndcoords({ x: Number(rect.right.toFixed(4)), y: Number(rect.bottom.toFixed(4)) });
+      setW(Number(rect["width"].toFixed(4)));
+      setH(Number(rect["height"].toFixed(4)));
+      for (const key in rect) {
+        if (typeof rect[key] !== "function") {
+          console.log(`${key} : ${rect[key]}`);
+        }
+      }
+    }
+  }, [gameName]);
 
   useEffect(() => {
     if (!initial) {
@@ -68,25 +86,23 @@ const DrawingBoard = () => {
     }
   }, [gameName, imgSource, getImgCoord]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWidth(window.innerWidth);
-      setHeight(window.innerHeight);
-    };
-    window.addEventListener("resize", handleResize);
-    // Cleanup function to remove the event listener
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   const f = document.getElementById("box");
- 
+
   if (f) {
     document.addEventListener(
       "click",
       (ev) => {
-        f.style.transform = `translateY(${ev.clientY - 3}px)`;
-        f.style.transform += `translateX(${ev.clientX - 3}px)`;
-        normalizeCoord(ev.clientX, ev.clientY);
+        let { movetoX, movetoY } = moveToCoord(
+          ev.clientX,
+          ev.clientY,
+          ev.pageX,
+          ev.pageY
+        );
+
+        f.style.transform = `translateY(${movetoY - 5}px)`;
+        f.style.transform += `translateX(${movetoX - 15}px)`;
+        let temp = clickInsideImg(ev.pageX, ev.pageY,coords,endcoords);
+        setClickImg(temp);
       },
       false
     );
@@ -94,48 +110,16 @@ const DrawingBoard = () => {
     console.log("Element does not exist");
   }
 
-  function normalizeCoord(x, y) {
-    const imgClick = clickInsideImg(x, y);
-    switch (imgClick) {
-      case true:{
-        const W = Number(endcoords.x) - Number(coords.x);
-        const H = Number(endcoords.y) - Number(coords.y);
-        const relativeX = Number(x) - Number(coords.x);
-        const relativeY = Number(y) - Number(coords.y);
-        const Xnormalize1 = (2 * relativeX) / W - 1;
-        const Ynormalize1 = (2 * relativeY) / H - 1;
-        setTagginCoords({ x: Xnormalize1, y: Ynormalize1 });
-      }
-        break;
-      case false:
-        setTagginCoords({ x: 0, y: 0 });
-        break;
-    }
-  }
-
-  function clickInsideImg(x, y) {
-    switch (Number(x) > Number(coords.x) && Number(x) < Number(endcoords.x)) {
-      case true:
-        switch (
-          Number(y) > Number(coords.y) &&
-          Number(y) < Number(endcoords.y)
-        ) {
-          case true:
-            return true;
-          case false:
-            return false;
-        }
-      break;
-      case false:
-        return false;
-    }
-  }
-
   return (
     <>
       <div className="bar">
         <>
-          <div id="box" className={`${box}`}></div>
+          <div id="box" className={`${box}`}>
+            <TargetingBox />
+            <DropdownMenu 
+            clickImg = {clickImg}
+            placeMenu = {placeMenu} />
+          </div>
           <div>
             <ToggleTheme theme="dark" />
           </div>
@@ -166,6 +150,9 @@ const DrawingBoard = () => {
               alt={gameName}
               className=""
               width={width * 0.8}
+              height={
+                width * 0.8 * 0.65 < height ? width * 0.8 * 0.65 : height * 0.95
+              }
             ></img>
           </>
         )}
