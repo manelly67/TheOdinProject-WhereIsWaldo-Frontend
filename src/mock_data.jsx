@@ -5,9 +5,9 @@ const mock_data_1 = {
     src_image:
       "https://res.cloudinary.com/dwlqplcgt/image/upload/v1742854639/Waldo_galactic_city_lzdru1.png",
     characters: [
-      { name: "Wally" },
-      { name: "The Wizard" },
-      { name: "Courage the Cowardly Dog" },
+      { id: "char-1", name: "Wally", found: false},
+      { id: "char-2", name: "The Wizard", found: false },
+      { id: "char-3", name: "Courage the Cowardly Dog", found: false },
     ],
   },
 };

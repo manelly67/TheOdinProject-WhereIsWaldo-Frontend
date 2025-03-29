@@ -1,11 +1,33 @@
 .box {
     border-radius: 3px;
     border-color: 3px solid black;
-    width: 10px;
-    height: 30px;
+    width: 30px;
+    height: 25px;
     background-color: rgba(255, 255, 255, 0.5);
     position: absolute;
     top: 0;
     left: 0;
     transition: transform 1s;
+  }
+
+.placeMenu {
+  position: absolute; /* in relation parent */
+  transform: translate(100%,-100%);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 60px;
+  font-size: 0.6rem;
+  color: #ecfccb;
+  background-color: #052e16;
+}
+
+
+.dropdownMenu{
+    display: none;
+  }
+
+.visible{
+    display: grid;
   }

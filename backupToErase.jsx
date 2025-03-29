@@ -5,21 +5,17 @@ import ToggleTheme from "./ToggleTheme";
 import mock_data_1 from "../mock_data";
 import styles from "../Box.module.css";
 import TargetingBox from "./TargetinBox";
-import DropdownMenu from "./DropdownMenu";
-import { moveToCoord, clickInsideImg } from "./coord";
 
 const DrawingBoard = () => {
-  const { box, placeMenu, dropdownMenu, visible } = styles;
+  const { box } = styles;
   const titleDiv = document.querySelector("title");
 
   const location = useLocation();
   const [initial, setInitial] = useState(false);
-
   const [player, setPlayer] = useState(null);
   const [gameName, setGameName] = useState(null);
   const [responseData, setResponseData] = useState("{}");
   const [imgSource, setImgSource] = useState(null);
-  const [imgCharacters, setImgCharacters] = useState(null);
 
   const [width, setWidth] = useState(window.innerWidth);
   const [height, setHeight] = useState(window.innerHeight);
@@ -27,16 +23,13 @@ const DrawingBoard = () => {
   const [endcoords, setEndcoords] = useState({ x: 0, y: 0 });
   const [W, setW] = useState(0);
   const [H, setH] = useState(0);
+
   const [tagginCoords, setTagginCoords] = useState({ x: 0, y: 0 });
-
-  const [clickImg, setClickImg] = useState(false);
-
   console.log(coords);
   console.log(endcoords);
-  console.log(width, "-", height);
-  console.log(W, "-", H);
+  console.log(width,'-',height);
+  console.log(W,'-',H);
   console.log(tagginCoords);
-  console.log(clickImg);
 
   if (titleDiv) {
     titleDiv.textContent = gameName;
@@ -57,49 +50,28 @@ const DrawingBoard = () => {
     }
   }, [location.state]);
 
-  async function getData(mock_data_1) {
-    setResponseData(mock_data_1);
-    setImgSource(mock_data_1.picture.src_image);
-    setImgCharacters(mock_data_1.picture.characters);
-  }
-
   const getImgCoord = useCallback(() => {
     const imageRef = document.getElementById(`${gameName}`);
     if (imageRef) {
       const rect = imageRef.getBoundingClientRect();
-      setCoords({
-        x: Number(rect.left.toFixed(4)),
-        y: Number(rect.top.toFixed(4)),
-      });
-      setEndcoords({
-        x: Number(rect.right.toFixed(4)),
-        y: Number(rect.bottom.toFixed(4)),
-      });
-      setW(Number(rect["width"].toFixed(4)));
-      setH(Number(rect["height"].toFixed(4)));
+      setCoords({ x: rect.left, y: rect.top });
+      setEndcoords({ x: rect.right, y: rect.bottom });
+      setW(rect['width']);
+      setH(rect['height']);
       for (const key in rect) {
         if (typeof rect[key] !== "function") {
-          console.log(`${key} : ${rect[key]}`);
+          
+          console.log( `${key} : ${rect[key]}`);
         }
       }
     }
   }, [gameName]);
 
-  const handleClick = useCallback(() => {
-    document.addEventListener(
-      "click",
-      (ev) => {
-        let { movetoX, movetoY } = moveToCoord(
-          ev.clientX,
-          ev.clientY,
-          ev.pageX,
-          ev.pageY
-        );
-        setTagginCoords({ x: movetoX, y: movetoY });
-      },
-      false
-    );
-  }, []);
+
+  async function getData(mock_data_1) {
+    setResponseData(mock_data_1);
+    setImgSource(mock_data_1.picture.src_image);
+  }
 
   useEffect(() => {
     if (!initial) {
@@ -114,77 +86,95 @@ const DrawingBoard = () => {
   }, [gameName, imgSource, getImgCoord]);
 
   useEffect(() => {
-    const temp = clickInsideImg(tagginCoords, coords, endcoords);
-    console.log(temp);
-    setClickImg(temp);
-  }, [tagginCoords, coords, endcoords]);
-
-  useEffect(() => {
-    const f = document.getElementById("box");
-    if (f) {
-      f.style.transform = `translateY(${tagginCoords.y - 5}px)`;
-      f.style.transform += `translateX(${tagginCoords.x - 15}px)`;
-    }
-  }, [tagginCoords]);
-
-  useEffect(() => {
-    document.addEventListener('click', handleClick);
-    return () => {
-      document.removeEventListener('click', handleClick);
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+      setHeight(window.innerHeight);
     };
-  }, [handleClick]);
+    window.addEventListener("resize", handleResize);
+    
+    // Cleanup function to remove the event listener
+    return () => 
+      window.removeEventListener("resize", handleResize);
+   
+  }, []); 
 
-  /* useEffect(() => {
+  useEffect(()=>{
+    document.addEventListener('scroll',updateImgCoord);
+
+    return () => 
+      document.addEventListener('scroll',updateImgCoord);
+  },[]);
+
+  const f = document.getElementById("box");
+
+  if (f) {
     document.addEventListener(
       "click",
       (ev) => {
-        let { movetoX, movetoY } = moveToCoord(
-          ev.clientX,
-          ev.clientY,
-          ev.pageX,
-          ev.pageY
-        );
-        setTagginCoords({ x: movetoX, y: movetoY });
+        f.style.transform = `translateY(${ev.clientY - 3}px)`;
+        f.style.transform += `translateX(${ev.clientX - 3}px)`;
+        normalizeCoord(ev.clientX, ev.clientY);
       },
       false
     );
+  } else {
+    console.log("Element does not exist");
+  } 
 
-    return document.removeEventListener("click", (ev) => {
-      let { movetoX, movetoY } = moveToCoord(
-        ev.clientX,
-        ev.clientY,
-        ev.pageX,
-        ev.pageY
-      );
-      setTagginCoords({ x: movetoX, y: movetoY });
-    });
-  }, []);
- */
+  
+
+  function updateImgCoord(){
+    console.log('update function');
+    const imageRef = document.getElementById(`${gameName}`);
+    console.log(imageRef);
+    if (imageRef) {
+      const rect = imageRef.getBoundingClientRect();
+      setCoords({ x: rect.left, y: rect.top });
+      setEndcoords({ x: rect.right, y: rect.bottom });
+      setW(rect['width']);
+      setH(rect['height']);
+      for (const key in rect) {
+        if (typeof rect[key] !== "function") {
+          
+          console.log( `${key} : ${rect[key]}`);
+        }
+      }
+    }
+  }
+
+  function normalizeCoord(x, y) {
+    const relativeX = Number(x) - Number(coords.x);
+          const relativeY = Number(y) - Number(coords.y);
+          const Xnormalize1 = ((2 * relativeX) / W )- 1;
+          const Ynormalize1 = ((2 * relativeY) / H) - 1;
+          setTagginCoords({ x: Xnormalize1, y: Ynormalize1 });
+  }
+
+  /* function clickInsideImg(x, y) {
+    switch (Number(x) > Number(coords.x) && Number(x) < Number(endcoords.x)) {
+      case true:
+        switch (
+          Number(y) > Number(coords.y) &&
+          Number(y) < Number(endcoords.y)
+        ) {
+          case true:
+            return true;
+          case false:
+            return false;
+        }
+        break;
+      case false:
+        return false;
+    }
+  } */
+
   return (
     <>
       <div className="bar">
         <>
           <div id="box" className={`${box}`}>
-            <div>
-              <TargetingBox />
-            </div>
-            <div>
-              <DropdownMenu
-                clickImg={clickImg}
-                handleClick={handleClick}
-                coords={coords}
-                endcoords={endcoords}
-                tagginCoords={tagginCoords}
-                setTagginCoords={setTagginCoords}
-                placeMenu={placeMenu}
-                dropdownMenu={dropdownMenu}
-                visible={visible}
-                imgCharacters={imgCharacters}
-              />
-            </div>
+            <TargetingBox />
           </div>
-          
-
           <div>
             <ToggleTheme theme="dark" />
           </div>
@@ -215,9 +205,7 @@ const DrawingBoard = () => {
               alt={gameName}
               className=""
               width={width * 0.8}
-              height={
-                width * 0.8 * 0.65 < height ? width * 0.8 * 0.65 : height * 0.95
-              }
+              height={width * 0.8 * 0.65 < height ? width * 0.8 * 0.65 : height * 0.9}
             ></img>
           </>
         )}

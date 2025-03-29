@@ -6,21 +6,24 @@ const moveToCoord = (clientX, clientY, pageX, pageY) => {
   return { movetoX, movetoY };
 };
 
-function clickInsideImg(pageX, pageY, coords, endcoords) {
+const clickInsideImg = (tagginCoords, coords, endcoords) => {
+  console.log(tagginCoords, coords, endcoords);
+ 
 
-  switch (pageX > coords.x && pageX < endcoords.x) {
-    case true:
-      switch (pageY > coords.y && pageY < endcoords.y) {
-        case true:
-          return true;
-          break;
-        default:
-          return false;
-      }
-      break;
-    default:
-      return false;
-  }
-}
+    switch (tagginCoords.x > coords.x && tagginCoords.x < endcoords.x) {
+      case true:
+        switch (tagginCoords.y > coords.y && tagginCoords.y < endcoords.y) {
+          case true:
+            return true;
+          default:
+            return false;
+        }
+      default:
+        return false;
+    } 
+  
+ 
+
+};
 
 export { moveToCoord, clickInsideImg };
