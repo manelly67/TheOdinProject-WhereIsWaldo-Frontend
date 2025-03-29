@@ -182,6 +182,8 @@ const DrawingBoard = () => {
                 clickImg={clickImg}
                 setClickImg={setClickImg}
                 coords={coords}
+                W={W}
+                H={H}
                 endcoords={endcoords}
                 tagginCoords={tagginCoords}
                 setTagginCoords={setTagginCoords}

@@ -38,7 +38,7 @@ const DropdownMenu = (props) => {
     console.log("funcion submit char");
    
     event.stopPropagation();
-    getNormalizedCoords();
+    getNormalizedCoords(props.tagginCoords, props.coords,props.W,props.H,props.setNormalizeCoords);
     // DESDE AQUI SE LLAMARA LA FUNCION PARA EL BACKEND
     // con el objeto personaje, las coordenadas normalizadas, el jugador, y el id del juego o partida
     closeMenu();

@@ -21,8 +21,18 @@ const clickInsideImg = (tagginCoords, coords, endcoords) => {
     } 
 };
 
-const getNormalizedCoords = () => {
-
+const getNormalizedCoords = (tagginCoords, coords,W,H,setNormalizeCoords) => {
+  const relativeX = tagginCoords.x - coords.x;
+  const relativeY = tagginCoords.y - coords.y;
+  let Xnormalize1 = ((2 * relativeX) / W )- 1;
+  Xnormalize1=Number(Xnormalize1.toFixed(10));
+  let Ynormalize1 = ((2 * relativeY) / H) - 1;
+  Ynormalize1=Number(Ynormalize1.toFixed(10));
+  setNormalizeCoords({x:Xnormalize1,y:Ynormalize1});
 }
+
+const fromNormalizeToScreen = () => {
+  
+};
 
 export { moveToCoord, clickInsideImg, getNormalizedCoords };
