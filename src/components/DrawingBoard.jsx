@@ -28,8 +28,9 @@ const DrawingBoard = () => {
   const [W, setW] = useState(0);
   const [H, setH] = useState(0);
   const [tagginCoords, setTagginCoords] = useState({ x: 0, y: 0 });
-
   const [clickImg, setClickImg] = useState(false);
+  const [normalizeCoords, setNormalizeCoords] = useState({ x: 0, y: 0 });
+  const [selectedChar, setSelectedChar] = useState({id:"",name:"",found:false});
 
   console.log(coords);
   console.log(endcoords);
@@ -37,6 +38,8 @@ const DrawingBoard = () => {
   console.log(W, "-", H);
   console.log(tagginCoords);
   console.log(clickImg);
+  console.log(normalizeCoords);
+  console.log(selectedChar);
 
   if (titleDiv) {
     titleDiv.textContent = gameName;
@@ -77,15 +80,15 @@ const DrawingBoard = () => {
       });
       setW(Number(rect["width"].toFixed(4)));
       setH(Number(rect["height"].toFixed(4)));
-      for (const key in rect) {
+     /*  for (const key in rect) {
         if (typeof rect[key] !== "function") {
           console.log(`${key} : ${rect[key]}`);
         }
-      }
+      } */
     }
   }, [gameName]);
 
-  const handleClick = useCallback(() => {
+ /*  const handleClick = useCallback(() => {
     document.addEventListener(
       "click",
       (ev) => {
@@ -99,7 +102,7 @@ const DrawingBoard = () => {
       },
       false
     );
-  }, []);
+  }, []); */
 
   useEffect(() => {
     if (!initial) {
@@ -127,14 +130,14 @@ const DrawingBoard = () => {
     }
   }, [tagginCoords]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     document.addEventListener('click', handleClick);
     return () => {
       document.removeEventListener('click', handleClick);
     };
-  }, [handleClick]);
+  }, [handleClick]); */
 
-  /* useEffect(() => {
+  useEffect(() => {
     document.addEventListener(
       "click",
       (ev) => {
@@ -148,18 +151,24 @@ const DrawingBoard = () => {
       },
       false
     );
-
-    return document.removeEventListener("click", (ev) => {
-      let { movetoX, movetoY } = moveToCoord(
-        ev.clientX,
-        ev.clientY,
-        ev.pageX,
-        ev.pageY
+    return () => {
+      document.removeEventListener(
+        "click",
+        (ev) => {
+          let { movetoX, movetoY } = moveToCoord(
+            ev.clientX,
+            ev.clientY,
+            ev.pageX,
+            ev.pageY
+          );
+          setTagginCoords({ x: movetoX, y: movetoY });
+        },
+        false
       );
-      setTagginCoords({ x: movetoX, y: movetoY });
-    });
+    };
   }, []);
- */
+
+
   return (
     <>
       <div className="bar">
@@ -171,7 +180,7 @@ const DrawingBoard = () => {
             <div>
               <DropdownMenu
                 clickImg={clickImg}
-                handleClick={handleClick}
+                setClickImg={setClickImg}
                 coords={coords}
                 endcoords={endcoords}
                 tagginCoords={tagginCoords}
@@ -180,6 +189,9 @@ const DrawingBoard = () => {
                 dropdownMenu={dropdownMenu}
                 visible={visible}
                 imgCharacters={imgCharacters}
+                selectedChar={selectedChar}
+                setSelectedChar={setSelectedChar}
+                setNormalizeCoords={setNormalizeCoords}
               />
             </div>
           </div>

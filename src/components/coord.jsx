@@ -8,8 +8,6 @@ const moveToCoord = (clientX, clientY, pageX, pageY) => {
 
 const clickInsideImg = (tagginCoords, coords, endcoords) => {
   console.log(tagginCoords, coords, endcoords);
- 
-
     switch (tagginCoords.x > coords.x && tagginCoords.x < endcoords.x) {
       case true:
         switch (tagginCoords.y > coords.y && tagginCoords.y < endcoords.y) {
@@ -21,9 +19,10 @@ const clickInsideImg = (tagginCoords, coords, endcoords) => {
       default:
         return false;
     } 
-  
- 
-
 };
 
-export { moveToCoord, clickInsideImg };
+const getNormalizedCoords = () => {
+
+}
+
+export { moveToCoord, clickInsideImg, getNormalizedCoords };
