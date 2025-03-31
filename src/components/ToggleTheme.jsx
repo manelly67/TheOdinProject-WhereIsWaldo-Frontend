@@ -16,7 +16,8 @@ const ToggleTheme = (props) => {
     return (
         <button
         className="themeButton"
-        onClick={() => {
+        onClick={(event) => {
+          event.stopPropagation();
           toggleTheme();
         }}
       >

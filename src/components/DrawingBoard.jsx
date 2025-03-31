@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import ToggleTheme from "./ToggleTheme";
 import mock_data_1 from "../mock_data";
-import styles from "../Box.module.css";
+import styles from "../styles/Box.module.css";
 import TargetingBox from "./TargetinBox";
 import DropdownMenu from "./DropdownMenu";
 import { moveToCoord, clickInsideImg } from "./coord";
@@ -52,7 +52,7 @@ const DrawingBoard = () => {
       setGameName(gameName);
       if (gameName !== null) {
         setInitial(true);
-        // ESTA FUNCION LUEGO TAERA LA DATa DEL FETCH AL BACKEND POR AHORA tRAER LOCALMENTE
+        // ESTA FUNCION LUEGO TRAERA LA DATa DEL FETCH AL BACKEND POR AHORA tRAER LOCALMENTE
         if (gameName === "Waldo In The Galactic City") {
           await getData(mock_data_1); // aqui ubicar la url correcta
         }
@@ -80,29 +80,8 @@ const DrawingBoard = () => {
       });
       setW(Number(rect["width"].toFixed(4)));
       setH(Number(rect["height"].toFixed(4)));
-     /*  for (const key in rect) {
-        if (typeof rect[key] !== "function") {
-          console.log(`${key} : ${rect[key]}`);
-        }
-      } */
     }
   }, [gameName]);
-
- /*  const handleClick = useCallback(() => {
-    document.addEventListener(
-      "click",
-      (ev) => {
-        let { movetoX, movetoY } = moveToCoord(
-          ev.clientX,
-          ev.clientY,
-          ev.pageX,
-          ev.pageY
-        );
-        setTagginCoords({ x: movetoX, y: movetoY });
-      },
-      false
-    );
-  }, []); */
 
   useEffect(() => {
     if (!initial) {
@@ -125,17 +104,15 @@ const DrawingBoard = () => {
   useEffect(() => {
     const f = document.getElementById("box");
     if (f) {
-      f.style.transform = `translateY(${tagginCoords.y - 5}px)`;
-      f.style.transform += `translateX(${tagginCoords.x - 15}px)`;
+      if(tagginCoords.x===0 && tagginCoords.y===0){
+        f.style.transform = `translateY(${tagginCoords.y}px)`;
+        f.style.transform += `translateX(${tagginCoords.x}px)`;
+      }else{
+        f.style.transform = `translateY(${tagginCoords.y - 5}px)`;
+        f.style.transform += `translateX(${tagginCoords.x - 15}px)`;
+      }     
     }
   }, [tagginCoords]);
-
-  /* useEffect(() => {
-    document.addEventListener('click', handleClick);
-    return () => {
-      document.removeEventListener('click', handleClick);
-    };
-  }, [handleClick]); */
 
   useEffect(() => {
     document.addEventListener(
@@ -194,6 +171,7 @@ const DrawingBoard = () => {
                 selectedChar={selectedChar}
                 setSelectedChar={setSelectedChar}
                 setNormalizeCoords={setNormalizeCoords}
+                player={player}
               />
             </div>
           </div>

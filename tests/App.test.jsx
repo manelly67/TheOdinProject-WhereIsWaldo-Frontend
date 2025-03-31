@@ -1,18 +1,15 @@
-import React from "react";
 import {
-  BrowserRouter,
   MemoryRouter,
-  useNavigate,
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { describe, it, expect} from "vitest";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import toHaveStyle from "@testing-library/jest-dom";
 
-import App from "./App.jsx";
-import routes from "./components/routes.jsx";
+import App from "../src/App.jsx";
+import routes from "../src/components/routes.jsx";
 
 describe("App Component", () => {
   it("display the page", () => {
