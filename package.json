@@ -8,6 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "test": "vitest",
+    "test:single": "vitest $FILE",
     "preview": "vite preview"
   },
   "dependencies": {

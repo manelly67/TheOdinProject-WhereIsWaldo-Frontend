@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import mock_data from "../src/mock_data.jsx";
+import {mock_data_1,mock_data_2} from "../src/mock_data.jsx";
 import DropdownMenu from "../src/components/DropdownMenu.jsx";
 
 describe("simple use of mock fuction", () => {
@@ -33,7 +33,7 @@ describe("dropdown menu behavior", () => {
     render(
       <DropdownMenu
         clickImg={true}
-        imgCharacters={mock_data.picture.characters}
+        imgCharacters={mock_data_1.picture.characters}
         dropdownMenu={classDropdown}
         visible={classVisible}
       />
@@ -61,34 +61,34 @@ describe("dropdown menu behavior", () => {
     render(
       <DropdownMenu
         clickImg={true}
-        imgCharacters={mock_data.picture.characters}
+        imgCharacters={mock_data_1.picture.characters}
         dropdownMenu={classDropdown}
         visible={classVisible}
       />
     );
     const button = screen.getByText(/tags/i);
     await user.click(button); // menu open
-    let length = mock_data.picture.characters.length;
+    let length = mock_data_1.picture.characters.length;
     expect(screen.queryAllByRole("option").length).toBe(
-      mock_data.picture.characters.length
+      mock_data_1.picture.characters.length
     );
     // the default value for select element is the firs option
     expect(screen.queryByRole("combobox").value).toBe(
-      mock_data.picture.characters[0].name
+      mock_data_1.picture.characters[0].name
     );
 
     // when select the last option change the combobox value
     await user.selectOptions(
       screen.getByRole("combobox"),
-      `${[mock_data.picture.characters[length - 1].name]}`
+      `${[mock_data_1.picture.characters[length - 1].name]}`
     );
     expect(screen.queryByRole("combobox").value).toBe(
-      mock_data.picture.characters[length - 1].name
+      mock_data_1.picture.characters[length - 1].name
     );
     if (length > 1) {
       expect(
         screen.getByRole("option", {
-          name: `${[mock_data.picture.characters[0].name]}`,
+          name: `${[mock_data_1.picture.characters[0].name]}`,
         }).selected
       ).toBe(false);
     }

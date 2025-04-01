@@ -9,7 +9,7 @@ import userEvent from "@testing-library/user-event";
 
 
 import routes from "../src/components/routes.jsx";
-import mock_data from "../src/mock_data.jsx";
+import {mock_data_1, mock_data_2} from "../src/mock_data.jsx";
 import DrawingBoard from "../src/components/DrawingBoard";
 import DropdownMenu from "../src/components/DropdownMenu.jsx";
 
@@ -53,7 +53,7 @@ describe("display DrawingBoard", () => {
     const user = userEvent.setup();
 
     const buttons = screen.getAllByRole("button");
-    const button = buttons[1];
+    const button = buttons[1]; // choose the button for galactic city
 
     await user.click(button);
 
@@ -75,7 +75,7 @@ describe("display DrawingBoard", () => {
     render(
       <DropdownMenu
         clickImg={true}
-        imgCharacters={mock_data.picture.characters}
+        imgCharacters={mock_data_1.picture.characters}
       />
     );
     expect(screen.getByText(/tags/i)).toBeInTheDocument();
@@ -93,7 +93,7 @@ describe("display DrawingBoard", () => {
     render(
       <DropdownMenu
         clickImg={false}
-        imgCharacters={mock_data.picture.characters}
+        imgCharacters={mock_data_1.picture.characters}
       />
     );
     expect(screen.queryByText(/tags/i)).not.toBeInTheDocument();

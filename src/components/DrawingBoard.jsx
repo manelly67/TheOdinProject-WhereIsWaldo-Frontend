@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import ToggleTheme from "./ToggleTheme";
-import mock_data_1 from "../mock_data";
+import { mock_data_1, mock_data_2 } from "../mock_data";
 import styles from "../styles/Box.module.css";
 import TargetingBox from "./TargetinBox";
 import DropdownMenu from "./DropdownMenu";
+import TagTheChar from "./TagTheChar";
 import { moveToCoord, clickInsideImg } from "./coord";
 
 const DrawingBoard = () => {
@@ -30,7 +31,11 @@ const DrawingBoard = () => {
   const [tagginCoords, setTagginCoords] = useState({ x: 0, y: 0 });
   const [clickImg, setClickImg] = useState(false);
   const [normalizeCoords, setNormalizeCoords] = useState({ x: 0, y: 0 });
-  const [selectedChar, setSelectedChar] = useState({id:"",name:"",found:false});
+  const [selectedChar, setSelectedChar] = useState({
+    id: "",
+    name: "",
+    found: false,
+  });
 
   console.log(coords);
   console.log(endcoords);
@@ -61,7 +66,7 @@ const DrawingBoard = () => {
   }, [location.state]);
 
   async function getData(mock_data_1) {
-    setResponseData(mock_data_1);
+    setResponseData(mock_data_1); // pensar en no actualizar aqui y dejar solo para la respuesta
     setImgSource(mock_data_1.picture.src_image);
     setImgCharacters(mock_data_1.picture.characters);
   }
@@ -104,13 +109,13 @@ const DrawingBoard = () => {
   useEffect(() => {
     const f = document.getElementById("box");
     if (f) {
-      if(tagginCoords.x===0 && tagginCoords.y===0){
+      if (tagginCoords.x === 0 && tagginCoords.y === 0) {
         f.style.transform = `translateY(${tagginCoords.y}px)`;
         f.style.transform += `translateX(${tagginCoords.x}px)`;
-      }else{
+      } else {
         f.style.transform = `translateY(${tagginCoords.y - 5}px)`;
         f.style.transform += `translateX(${tagginCoords.x - 15}px)`;
-      }     
+      }
     }
   }, [tagginCoords]);
 
@@ -145,7 +150,6 @@ const DrawingBoard = () => {
     };
   }, []);
 
-
   return (
     <>
       <div className="bar">
@@ -172,10 +176,11 @@ const DrawingBoard = () => {
                 setSelectedChar={setSelectedChar}
                 setNormalizeCoords={setNormalizeCoords}
                 player={player}
+                responseData={responseData}
+                setResponseData={setResponseData}
               />
             </div>
           </div>
-          
 
           <div>
             <ToggleTheme theme="dark" />
@@ -214,6 +219,9 @@ const DrawingBoard = () => {
           </>
         )}
       </div>
+      {imgCharacters ? (
+        <TagTheChar imgCharacters={imgCharacters} coords={coords} W={W} H={H} />
+      ) : null}
     </>
   );
 };

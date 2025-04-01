@@ -31,8 +31,15 @@ const getNormalizedCoords = (tagginCoords, coords,W,H,setNormalizeCoords) => {
   setNormalizeCoords({x:Xnormalize1,y:Ynormalize1});
 }
 
-const fromNormalizeToScreen = () => {
-  
+// normalX and normalY will be received from the backend answer
+const fromNormalizeToScreen = (normalX,normalY,W,H,coords) => {
+  console.log(W,H);
+  let relativeX = (W*(normalX+1))/2;
+  let X = Number((coords.x + relativeX).toFixed(2));
+  let relativeY = (H*(normalY+1))/2;
+  let Y = Number((coords.y + relativeY).toFixed(2));
+  console.log({x:X,y:Y});
+  return {x:X,y:Y};
 };
 
-export { moveToCoord, clickInsideImg, getNormalizedCoords };
+export { moveToCoord, clickInsideImg, getNormalizedCoords, fromNormalizeToScreen };

@@ -6,7 +6,7 @@ exports[`display DrawingBoard > display the page when location.state is null 1`]
     class="bar"
   >
     <div
-      class="_box_3f9b6c"
+      class="_box_189d04"
       id="box"
       style="transform: translateY(0px)translateX(0px);"
     >
