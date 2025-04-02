@@ -18,6 +18,7 @@ const DrawingBoard = () => {
 
   const [player, setPlayer] = useState(null);
   const [gameName, setGameName] = useState(null);
+  
   const [responseData, setResponseData] = useState("{}");
   const [imgSource, setImgSource] = useState(null);
   const [imgCharacters, setImgCharacters] = useState(null);
@@ -55,20 +56,25 @@ const DrawingBoard = () => {
       const { player, gameName } = location.state;
       setPlayer(player);
       setGameName(gameName);
+  
       if (gameName !== null) {
         setInitial(true);
         // ESTA FUNCION LUEGO TRAERA LA DATa DEL FETCH AL BACKEND POR AHORA tRAER LOCALMENTE
         if (gameName === "Waldo In The Galactic City") {
           await getData(mock_data_1); // aqui ubicar la url correcta
         }
+        if (gameName === "Oh! Waldo is not here") {
+          await getData(mock_data_2); // aqui ubicar la url correcta
+        }
+
       }
     }
   }, [location.state]);
 
-  async function getData(mock_data_1) {
-    setResponseData(mock_data_1); // pensar en no actualizar aqui y dejar solo para la respuesta
-    setImgSource(mock_data_1.picture.src_image);
-    setImgCharacters(mock_data_1.picture.characters);
+  async function getData(arg) {
+    setResponseData(arg); // pensar en no actualizar aqui y dejar solo para la respuesta
+    setImgSource(arg.picture.src_image);
+    setImgCharacters(arg.picture.characters);
   }
 
   const getImgCoord = useCallback(() => {
@@ -180,11 +186,11 @@ const DrawingBoard = () => {
                 setResponseData={setResponseData}
               />
             </div>
-          </div>
+          </div>         
 
           <div>
             <ToggleTheme theme="dark" />
-          </div>
+          </div> 
 
           <div className="setOfLinks">
             <Link to="/" style={{ fontSize: "1.3rem" }}>

@@ -4,7 +4,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { describe, it, expect} from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import toHaveStyle from "@testing-library/jest-dom";
 
@@ -30,12 +30,28 @@ describe("App Component", () => {
 
     expect(screen.getByText(/Waldo In The Galactic City/i)).toBeInTheDocument();
     const buttons = screen.getAllByRole("button");
-    const button = buttons[1];
+    const [,second,third] = buttons;
 
-    await user.click(button);
+    await user.click(second);
 
     expect(
       screen.getByAltText(/Waldo In The Galactic City/i)
     ).toBeInTheDocument();
+
+    const homeLink = screen.getByText(/home/i);
+    // back to home
+    await user.click(homeLink);
+    // select other image
+    await user.click(third);
+
+    waitFor(()=>{
+      expect(
+        screen.getByAltText(/Oh! Waldo is not here/i)
+      ).toBeInTheDocument();
+  
+    });
+
+    
+
   });
 });

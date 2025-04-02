@@ -13,7 +13,7 @@ function App() {
 
   const navigate = useNavigate();
   const name_game_1 = "Waldo In The Galactic City";
-  const name_game_2 = "Another image";
+  const name_game_2 = "Oh! Waldo is not here";
   const [playerId, setPlayerId] = useState(null);
   const [playerName, setPlayerName] = useState(null);
   const player = playerId === null ? null : { id: playerId, name: playerName };

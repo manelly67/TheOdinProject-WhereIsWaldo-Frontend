@@ -4,13 +4,13 @@ exports[`display the tag of characters > tags when 1 character have been founded
 <div>
   <div>
     <div
-      style="background-color: black; color: white; font-size: 0.6rem; border: 1px solid white;"
+      style="background-color: black; color: white; font-size: 0.6rem; border: 1px solid white; z-index: 1;"
     />
     <div
-      style="background-color: black; color: white; font-size: 0.6rem; border: 1px solid white;"
+      style="background-color: black; color: white; font-size: 0.6rem; border: 1px solid white; z-index: 1;"
     />
     <div
-      style="background-color: black; color: white; font-size: 0.6rem; border: 1px solid white;"
+      style="background-color: black; color: white; font-size: 0.6rem; border: 1px solid white; z-index: 1;"
     >
       <p
         role="tag"
