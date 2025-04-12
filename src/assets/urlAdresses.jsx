@@ -4,6 +4,7 @@ const urlAddresses = {
     "home" : `${base}/`,
     "session" : `${base}/session-id`,
     "getplayer" : `${base}/players/player_for_session`,
+    "createGame" : `${base}/games/new`,
 };
 
 

@@ -8,23 +8,34 @@ import TargetingBox from "./TargetinBox";
 import DropdownMenu from "./DropdownMenu";
 import TagTheChar from "./TagTheChar";
 import { moveToCoord, clickInsideImg } from "./coord";
+import { urlAddresses } from "../assets/urlAdresses";
+
+let didInitImg1 = false;
+let didInitImg2 = false;
 
 const DrawingBoard = () => {
   const { box, placeMenu, dropdownMenu, visible } = styles;
   const titleDiv = document.querySelector("title");
 
   const location = useLocation();
-  const [initial, setInitial] = useState(false);
-
-  const [player, setPlayer] = useState(null);
-  const [gameName, setGameName] = useState(null);
   
+  const [gameName, setGameName] = useState(null);
+  const [game, setGame] = useState(null);
+  const player =
+    game === null
+      ? null
+      : { id: game.player.id_player, name: game.player.name_player };
   const [responseData, setResponseData] = useState("{}");
-  const [imgSource, setImgSource] = useState(null);
-  const [imgCharacters, setImgCharacters] = useState(null);
+  const imgSource = game===null ? null : game.picture.src_image;
+  const imgCharacters = game===null ? null : game.picture.characters;
 
-  const [width, setWidth] = useState(window.innerWidth);
-  const [height, setHeight] = useState(window.innerHeight);
+console.log(player);
+console.log(game);
+console.log(imgSource);
+console.log(imgCharacters);
+
+  const width = window.innerWidth;
+  const height = window.innerHeight;
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [endcoords, setEndcoords] = useState({ x: 0, y: 0 });
   const [W, setW] = useState(0);
@@ -38,7 +49,7 @@ const DrawingBoard = () => {
     found: false,
   });
 
-  console.log(coords);
+ /*  console.log(coords);
   console.log(endcoords);
   console.log(width, "-", height);
   console.log(W, "-", H);
@@ -46,36 +57,62 @@ const DrawingBoard = () => {
   console.log(clickImg);
   console.log(normalizeCoords);
   console.log(selectedChar);
-
+ */
   if (titleDiv) {
     titleDiv.textContent = gameName;
   }
 
+  const getData = useCallback(async (url) => {
+    try {
+      await fetch(url, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+          Connection: "keep-alive",
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setResponseData(data);
+          if (data.game) {
+            const { game } = data;
+            setGame(game);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      alert("Something was wrong. try again later");
+      console.log(error);
+    }
+  }, []);
+
   const initBoard = useCallback(async () => {
+    console.log(location.state);
     if (location.state !== null) {
       const { player, gameName } = location.state;
-      setPlayer(player);
       setGameName(gameName);
-  
+
       if (gameName !== null) {
-        setInitial(true);
-        // ESTA FUNCION LUEGO TRAERA LA DATa DEL FETCH AL BACKEND POR AHORA tRAER LOCALMENTE
         if (gameName === "Waldo In The Galactic City") {
-          await getData(mock_data_1); // aqui ubicar la url correcta
+          const url = `${urlAddresses.createGame}/img-1/${player.id}`;
+          if(!didInitImg1){
+            didInitImg1=true; 
+            await getData(url);
+          }
         }
         if (gameName === "Oh! Waldo is not here") {
-          await getData(mock_data_2); // aqui ubicar la url correcta
+          const url = `${urlAddresses.createGame}/img-2/${player.id}`;
+          if(!didInitImg2){
+            didInitImg2=true;
+            await getData(url);
+          }
         }
-
       }
     }
-  }, [location.state]);
-
-  async function getData(arg) {
-    setResponseData(arg); // pensar en no actualizar aqui y dejar solo para la respuesta
-    setImgSource(arg.picture.src_image);
-    setImgCharacters(arg.picture.characters);
-  }
+  }, [location.state, getData]);
 
   const getImgCoord = useCallback(() => {
     const imageRef = document.getElementById(`${gameName}`);
@@ -94,11 +131,42 @@ const DrawingBoard = () => {
     }
   }, [gameName]);
 
-  useEffect(() => {
-    if (!initial) {
-      initBoard();
+  const updateData = useCallback(async (url) => {
+    try {
+      const response = await fetch(url,{method:'GET'});
+      const responseData = await response.json();
+      if (responseData.game) {
+        const { game } = responseData;
+        setGame(game);
+      }
+    } catch (error) {
+      alert("Something was wrong. try again later");
+      console.log(error);
     }
-  });
+  },[]);
+
+  useEffect(() => {
+      if (game === null) {
+        initBoard();
+      }
+  }, [game, initBoard]);
+
+  useEffect(() => {
+    if (location.state !== null) {
+      const { player, gameName } = location.state;
+      if (gameName !== null) {
+        if (gameName === "Waldo In The Galactic City") {
+          const url = `${urlAddresses.createGame}/img-1/${player.id}`;
+          updateData(url);
+        }
+        if (gameName === "Oh! Waldo is not here") {
+          const url = `${urlAddresses.createGame}/img-2/${player.id}`;
+          updateData(url);
+        }
+      }
+    }
+  },[location.state,updateData]); 
+
 
   useEffect(() => {
     if (imgSource !== null) {
@@ -186,11 +254,11 @@ const DrawingBoard = () => {
                 setResponseData={setResponseData}
               />
             </div>
-          </div>         
+          </div>
 
           <div>
             <ToggleTheme theme="dark" />
-          </div> 
+          </div>
 
           <div className="setOfLinks">
             <Link to="/" style={{ fontSize: "1.3rem" }}>

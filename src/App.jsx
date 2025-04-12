@@ -4,12 +4,14 @@ import "./styles/App.css";
 import ToggleTheme from "./components/ToggleTheme";
 import { urlAddresses } from "./assets/urlAdresses";
 
+let didInit = false;
+
 function App() {
   const titleDiv = document.querySelector("title");
   if (titleDiv) {
     titleDiv.textContent = "WHERE IS WALDO";
   }
-
+ 
   const navigate = useNavigate();
   const name_game_1 = "Waldo In The Galactic City";
   const name_game_2 = "Oh! Waldo is not here";
@@ -41,7 +43,7 @@ function App() {
       alert("Something was wrong. try again later");
       console.log(error);
     }
-  }, []);
+  }, []); 
 
   const getPlayer = useCallback(async () => {
     let session = "";
@@ -83,8 +85,11 @@ function App() {
   }, [getSession]);
 
   useEffect(() => {
-    if (playerId === null) {
-      getPlayer();
+    if (!didInit) {
+      didInit = true;
+      if (playerId === null) {
+        getPlayer();
+      }
     }
   }, [playerId, getPlayer]);
 
