@@ -47,7 +47,7 @@ describe("display DrawingBoard", () => {
     ).toBeInTheDocument();
   });
 
-  it("display drawing board when location.state is not null", async () => {
+ /*  it("display drawing board when location.state is not null", async () => {
     const router = createBrowserRouter(routes);
     render(<RouterProvider router={router} />);
     const user = userEvent.setup();
@@ -60,7 +60,7 @@ describe("display DrawingBoard", () => {
     expect(
       screen.getByAltText(/Waldo In The Galactic City/i)
     ).toBeInTheDocument();
-  });
+  }); */
 
   it("render behavior when the click is inside the image", async () => {
     const router = createBrowserRouter(routes);

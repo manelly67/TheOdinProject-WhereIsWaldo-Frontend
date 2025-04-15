@@ -16,19 +16,14 @@ exports[`App Component > display the page 1`] = `
   <h1>
     Where is Waldo - The Game
   </h1>
-  <div
-    class="setOfButtons"
-  >
-    <button>
-      <h3>
-        Waldo In The Galactic City
-      </h3>
-    </button>
-    <button>
-      <h3>
-        Oh! Waldo is not here
-      </h3>
-    </button>
+  <div>
+    <p>
+      loading...
+    </p>
+    <hr />
+    <p>
+      Dear user, this is a study project, please wait 1 minute for the server to wake up.
+    </p>
   </div>
 </div>
 `;
