@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { getNormalizedCoords, fromNormalizeToScreen } from "./coord";
+import { urlAddresses } from "../assets/urlAdresses";
 
 
-// CREAR un componente escribir etiqueta con base a una respueta correct/incorrect
 const DropdownMenu = (props) => {
+  console.log(props.game);
   const [classes, setClasses] = useState(props.dropdownMenu);
   const [selected, setSelected] = useState(null);
 
@@ -29,36 +30,71 @@ const DropdownMenu = (props) => {
     setClasses(props.dropdownMenu);
   }
 
-  function getObject(selected) {
+ /*  function getObject(selected) {
     let filtered = props.imgCharacters.filter((e) => e.name === selected);
     if (filtered) {
       props.setSelectedChar(filtered[0]);
     }
-  }
+  } */
 
-  function submitChar(event) {
+    function getObject(selected) {
+      let filtered = props.imgCharacters.filter((e) => e.name === selected);
+      if (filtered) {
+        return filtered[0];
+      } else {
+        return null;
+      }
+    }
+
+
+  async function submitChar(event) {
     console.log("funcion submit char");
-
+    const url = `${urlAddresses.round}/${props.game.game_id}`;
+    console.log(url);
     event.stopPropagation();
-    getNormalizedCoords(
+    const {x,y} = getNormalizedCoords(
       props.tagginCoords,
       props.coords,
       props.W,
-      props.H,
-      props.setNormalizeCoords
+      props.H
+    /*   props.setNormalizeCoords */
     );
-    getObject(selected);
-
-    // DESDE AQUI SE LLAMARA LA FUNCION PARA EL BACKEND
-    // con el objeto personaje, las coordenadas normalizadas, el jugador, y el id del juego o partida
-    // y set actualizara el setResponseData 
-   /*  let responseData = {
-      answer: "correct",
-      tagX: Number(-0.1586304817),
-      tagY: Number(-0.6217662801),
-      characters: [{ id: "char-1", name: "Wally", found: true }],
+    const objCharSelect = getObject(selected);
+    props.setSelectedChar(objCharSelect);  // ver si se necesita
+    
+    console.log(objCharSelect);
+    console.log(x);
+    console.log(y);
+    const bodydata = {
+      char_obj: objCharSelect,
+      normalize_x: x,
+      normalize_y: y,
     };
-    manageAnswer(responseData); */
+    try {
+      await fetch(url, {
+        method: "PUT",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+          Connection: "keep-alive",
+        },
+        body: JSON.stringify(bodydata),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          props.setMessageObj(data);
+          if(data.game){
+            props.setGame(data.game);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }catch (error) {
+      alert("Something was wrong. try again later");
+      console.log(error);
+    }
 
     closeMenu();
     props.setClickImg(false);

@@ -7,6 +7,7 @@ import styles from "../styles/Box.module.css";
 import TargetingBox from "./TargetinBox";
 import DropdownMenu from "./DropdownMenu";
 import TagTheChar from "./TagTheChar";
+import Message from "./Message";
 import { moveToCoord, clickInsideImg } from "./coord";
 import { urlAddresses } from "../assets/urlAdresses";
 
@@ -18,7 +19,7 @@ const DrawingBoard = () => {
   const titleDiv = document.querySelector("title");
 
   const location = useLocation();
-  
+
   const [gameName, setGameName] = useState(null);
   const [game, setGame] = useState(null);
   const player =
@@ -26,13 +27,14 @@ const DrawingBoard = () => {
       ? null
       : { id: game.player.id_player, name: game.player.name_player };
   const [responseData, setResponseData] = useState("{}");
-  const imgSource = game===null ? null : game.picture.src_image;
-  const imgCharacters = game===null ? null : game.picture.characters;
+  const [messageObj, setMessageObj] = useState(null);
+  const imgSource = game === null ? null : game.picture.src_image;
+  const imgCharacters = game === null ? null : game.picture.characters;
 
-console.log(player);
+  /* console.log(player);
 console.log(game);
 console.log(imgSource);
-console.log(imgCharacters);
+console.log(imgCharacters); */
 
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -49,7 +51,7 @@ console.log(imgCharacters);
     found: false,
   });
 
- /*  console.log(coords);
+  /*  console.log(coords);
   console.log(endcoords);
   console.log(width, "-", height);
   console.log(W, "-", H);
@@ -98,15 +100,15 @@ console.log(imgCharacters);
       if (gameName !== null) {
         if (gameName === "Waldo In The Galactic City") {
           const url = `${urlAddresses.createGame}/img-1/${player.id}`;
-          if(!didInitImg1){
-            didInitImg1=true; 
+          if (!didInitImg1) {
+            didInitImg1 = true;
             await getData(url);
           }
         }
         if (gameName === "Oh! Waldo is not here") {
           const url = `${urlAddresses.createGame}/img-2/${player.id}`;
-          if(!didInitImg2){
-            didInitImg2=true;
+          if (!didInitImg2) {
+            didInitImg2 = true;
             await getData(url);
           }
         }
@@ -119,12 +121,12 @@ console.log(imgCharacters);
     if (imageRef) {
       const rect = imageRef.getBoundingClientRect();
       setCoords({
-        x: Number(rect.left.toFixed(4)),
-        y: Number(rect.top.toFixed(4)),
+        x: Number(rect.left.toFixed(10)),
+        y: Number(rect.top.toFixed(10)),
       });
       setEndcoords({
-        x: Number(rect.right.toFixed(4)),
-        y: Number(rect.bottom.toFixed(4)),
+        x: Number(rect.right.toFixed(10)),
+        y: Number(rect.bottom.toFixed(10)),
       });
       setW(Number(rect["width"].toFixed(4)));
       setH(Number(rect["height"].toFixed(4)));
@@ -133,7 +135,7 @@ console.log(imgCharacters);
 
   const updateData = useCallback(async (url) => {
     try {
-      const response = await fetch(url,{method:'GET'});
+      const response = await fetch(url, { method: "GET" });
       const responseData = await response.json();
       if (responseData.game) {
         const { game } = responseData;
@@ -143,12 +145,12 @@ console.log(imgCharacters);
       alert("Something was wrong. try again later");
       console.log(error);
     }
-  },[]);
+  }, []);
 
   useEffect(() => {
-      if (game === null) {
-        initBoard();
-      }
+    if (game === null) {
+      initBoard();
+    }
   }, [game, initBoard]);
 
   useEffect(() => {
@@ -165,8 +167,7 @@ console.log(imgCharacters);
         }
       }
     }
-  },[location.state,updateData]); 
-
+  }, [location.state, updateData]);
 
   useEffect(() => {
     if (imgSource !== null) {
@@ -236,6 +237,8 @@ console.log(imgCharacters);
               <DropdownMenu
                 clickImg={clickImg}
                 setClickImg={setClickImg}
+                game={game}
+                setGame={setGame}
                 coords={coords}
                 W={W}
                 H={H}
@@ -249,9 +252,7 @@ console.log(imgCharacters);
                 selectedChar={selectedChar}
                 setSelectedChar={setSelectedChar}
                 setNormalizeCoords={setNormalizeCoords}
-                player={player}
-                responseData={responseData}
-                setResponseData={setResponseData}
+                setMessageObj={setMessageObj}
               />
             </div>
           </div>
@@ -295,6 +296,13 @@ console.log(imgCharacters);
       </div>
       {imgCharacters ? (
         <TagTheChar imgCharacters={imgCharacters} coords={coords} W={W} H={H} />
+      ) : null}
+
+      {messageObj ? (
+        <Message
+          messageObj={messageObj}
+          setMessageObj={setMessageObj}
+        />
       ) : null}
     </>
   );
