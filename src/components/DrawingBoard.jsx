@@ -16,25 +16,21 @@ let didInitImg2 = false;
 
 const DrawingBoard = () => {
   const { box, placeMenu, dropdownMenu, visible } = styles;
+  const [gameName, setGameName] = useState(null);
   const titleDiv = document.querySelector("title");
-
+  if (titleDiv) {
+    titleDiv.textContent = gameName;
+  }
   const location = useLocation();
 
-  const [gameName, setGameName] = useState(null);
   const [game, setGame] = useState(null);
-  const player =
-    game === null
-      ? null
-      : { id: game.player.id_player, name: game.player.name_player };
-  const [responseData, setResponseData] = useState("{}");
   const [messageObj, setMessageObj] = useState(null);
   const imgSource = game === null ? null : game.picture.src_image;
+  const imgId = game === null ? null : game.picture.id_image;
   const imgCharacters = game === null ? null : game.picture.characters;
-
-  /* console.log(player);
-console.log(game);
-console.log(imgSource);
-console.log(imgCharacters); */
+  const score = game === null ? null : formatScore(game.timeRecord);
+  console.log(game);
+  console.log(score);
 
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -44,25 +40,8 @@ console.log(imgCharacters); */
   const [H, setH] = useState(0);
   const [tagginCoords, setTagginCoords] = useState({ x: 0, y: 0 });
   const [clickImg, setClickImg] = useState(false);
-  const [normalizeCoords, setNormalizeCoords] = useState({ x: 0, y: 0 });
-  const [selectedChar, setSelectedChar] = useState({
-    id: "",
-    name: "",
-    found: false,
-  });
+  const [stop,setStop] = useState(false);
 
-  /*  console.log(coords);
-  console.log(endcoords);
-  console.log(width, "-", height);
-  console.log(W, "-", H);
-  console.log(tagginCoords);
-  console.log(clickImg);
-  console.log(normalizeCoords);
-  console.log(selectedChar);
- */
-  if (titleDiv) {
-    titleDiv.textContent = gameName;
-  }
 
   const getData = useCallback(async (url) => {
     try {
@@ -76,7 +55,6 @@ console.log(imgCharacters); */
       })
         .then((res) => res.json())
         .then((data) => {
-          setResponseData(data);
           if (data.game) {
             const { game } = data;
             setGame(game);
@@ -156,7 +134,7 @@ console.log(imgCharacters); */
   useEffect(() => {
     if (location.state !== null) {
       const { player, gameName } = location.state;
-      if (gameName !== null) {
+      if (gameName !== null && player !== null) {
         if (gameName === "Waldo In The Galactic City") {
           const url = `${urlAddresses.createGame}/img-1/${player.id}`;
           updateData(url);
@@ -194,7 +172,7 @@ console.log(imgCharacters); */
     }
   }, [tagginCoords]);
 
-  useEffect(() => {
+ /* useEffect(() => {
     document.addEventListener(
       "click",
       (ev) => {
@@ -223,39 +201,98 @@ console.log(imgCharacters); */
         false
       );
     };
-  }, []);
+  }, []); 
+  */ 
+
+  useEffect(() => {
+    switch (game === null) {
+      case true:
+        break;
+      case false:
+        switch (game.status === "ENDED") {
+          case true:
+            setStop(true);
+            break;
+          case false:
+            switch (game.status === "GAMING") {
+              case true:{
+                document.addEventListener(
+                  "click",
+                  (ev) => {
+                    let { movetoX, movetoY } = moveToCoord(
+                      ev.clientX,
+                      ev.clientY,
+                      ev.pageX,
+                      ev.pageY
+                    );
+                    setTagginCoords({ x: movetoX, y: movetoY });
+                  },
+                  false
+                );
+                return () => {
+                  document.removeEventListener(
+                    "click",
+                    (ev) => {
+                      let { movetoX, movetoY } = moveToCoord(
+                        ev.clientX,
+                        ev.clientY,
+                        ev.pageX,
+                        ev.pageY
+                      );
+                      setTagginCoords({ x: movetoX, y: movetoY });
+                    },
+                    false
+                  );
+                };
+              }
+              default:
+                break;
+            }
+        }
+    }
+  }, [game]);
+
+  function formatScore(score) {
+    if(score){
+      const { days, hours, minutes, seconds } = score;
+      let d = days ? `${days} days` : "";
+      let h = hours ? `${hours} hours` : "";
+      let m = minutes ? `${minutes} minutes` : "";
+      let s = seconds ? `${seconds} seconds` : "";
+      return `${d} ${h} ${m} ${s}`;
+    }
+  }
 
   return (
     <>
       <div className="bar">
         <>
-          <div id="box" className={`${box}`}>
-            <div>
-              <TargetingBox />
-            </div>
-            <div>
-              <DropdownMenu
-                clickImg={clickImg}
-                setClickImg={setClickImg}
-                game={game}
-                setGame={setGame}
-                coords={coords}
-                W={W}
-                H={H}
-                endcoords={endcoords}
-                tagginCoords={tagginCoords}
-                setTagginCoords={setTagginCoords}
-                placeMenu={placeMenu}
-                dropdownMenu={dropdownMenu}
-                visible={visible}
-                imgCharacters={imgCharacters}
-                selectedChar={selectedChar}
-                setSelectedChar={setSelectedChar}
-                setNormalizeCoords={setNormalizeCoords}
-                setMessageObj={setMessageObj}
-              />
-            </div>
-          </div>
+          {!stop ? (
+            <>
+              <div id="box" className={`${box}`}>
+                <div>
+                  <TargetingBox />
+                </div>
+                <div>
+                  <DropdownMenu
+                    clickImg={clickImg}
+                    setClickImg={setClickImg}
+                    game={game}
+                    setGame={setGame}
+                    coords={coords}
+                    W={W}
+                    H={H}
+                    tagginCoords={tagginCoords}
+                    placeMenu={placeMenu}
+                    dropdownMenu={dropdownMenu}
+                    visible={visible}
+                    imgCharacters={imgCharacters}
+                    setMessageObj={setMessageObj}
+                  />
+                </div>
+              </div>
+            </>
+          ) : null}
 
           <div>
             <ToggleTheme theme="dark" />
@@ -265,6 +302,21 @@ console.log(imgCharacters); */
             <Link to="/" style={{ fontSize: "1.3rem" }}>
               HOME
             </Link>
+            <Link
+              to={"/top_ten"}
+              state={{ img_id: imgId, gameName: gameName }}
+              style={{ fontSize: "1.3rem" }}
+            >
+              TOP TEN
+            </Link>
+            {!game ? null : !game.timeInSeconds ? null : (
+              <>
+                <div>
+                  <p> Your SCORE:</p>
+                  <p style={{ width: "80px" }}>{score}</p>
+                </div>
+              </>
+            )}
           </div>
         </>
       </div>
@@ -299,10 +351,7 @@ console.log(imgCharacters); */
       ) : null}
 
       {messageObj ? (
-        <Message
-          messageObj={messageObj}
-          setMessageObj={setMessageObj}
-        />
+        <Message messageObj={messageObj} setMessageObj={setMessageObj} />
       ) : null}
     </>
   );

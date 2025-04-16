@@ -1,6 +1,7 @@
 import App from "../App";
 import ErrorPage from "./Error_page";
 import DrawingBoard from "./DrawingBoard";
+import TopTen from "./TopTen";
 
 const routes = [
   {
@@ -13,6 +14,10 @@ const routes = [
   {
     path: "board",
     element: <DrawingBoard />,
+  },
+  {
+    path: "top_ten",
+    element: <TopTen />,
   },
 ];
 
