@@ -14,10 +14,10 @@ const Message = (props) => {
   }, [setMessageObj]);
 
   useEffect(() => {
-    setTimeout(deleteAfter, 4000);
+    setTimeout(deleteAfter, 3500);
 
     return () => {
-      clearTimeout(deleteAfter, 4000);
+      clearTimeout(deleteAfter, 3500);
     };
   }, [deleteAfter]);
 
@@ -32,7 +32,7 @@ const Message = (props) => {
 
   return (
     <>
-      <div className={`${element} ${looks}`}>
+      <div className={`${element} ${looks}`} role="message">
         {round_answer ? <h3>{round_answer.toUpperCase()}</h3> : null}
 
         {message ? <p>{message.toUpperCase()}</p> : null}

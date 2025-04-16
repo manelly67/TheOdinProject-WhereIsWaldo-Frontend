@@ -4,17 +4,17 @@ exports[`display the tag of characters > tags when 1 character have been founded
 <div>
   <div>
     <div
-      style="background-color: black; color: white; font-size: 0.6rem; border: 1px solid white; z-index: 1;"
+      style="z-index: 1;"
     />
     <div
-      style="background-color: black; color: white; font-size: 0.6rem; border: 1px solid white; z-index: 1;"
+      style="z-index: 1;"
     />
     <div
-      style="background-color: black; color: white; font-size: 0.6rem; border: 1px solid white; z-index: 1;"
+      style="z-index: 1;"
     >
       <p
         role="tag"
-        style="position: absolute; top: 232.56px; left: 414.62px;"
+        style="position: absolute; top: 237.56px; left: 414.62px; background-color: black; border: 1px solid white; color: yellow; font-size: 0.6rem; font-weight: 900;"
       >
         Courage the Cowardly Dog
       </p>

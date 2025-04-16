@@ -136,6 +136,8 @@ function App() {
       ) : (
         <>
           <div className="setOfButtons">
+          <p>For study purposes your player will last one day</p>
+          <p>and can play each game once</p>
             <button
               onClick={() => {
                 navigate("/board", {

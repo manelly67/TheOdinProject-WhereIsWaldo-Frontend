@@ -47,6 +47,13 @@ exports[`display DrawingBoard > display the page when location.state is null 1`]
       >
         HOME
       </a>
+      <a
+        data-discover="true"
+        href="/"
+        style="font-size: 1.3rem;"
+      >
+        TOP TEN
+      </a>
     </div>
   </div>
   <div>

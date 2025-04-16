@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { getNormalizedCoords, fromNormalizeToScreen } from "./coord";
+import { getNormalizedCoords } from "./coord";
 import { urlAddresses } from "../assets/urlAdresses";
 
 
 const DropdownMenu = (props) => {
-  console.log(props.game);
+ 
   const [classes, setClasses] = useState(props.dropdownMenu);
   const [selected, setSelected] = useState(null);
 
@@ -30,13 +30,7 @@ const DropdownMenu = (props) => {
     setClasses(props.dropdownMenu);
   }
 
- /*  function getObject(selected) {
-    let filtered = props.imgCharacters.filter((e) => e.name === selected);
-    if (filtered) {
-      props.setSelectedChar(filtered[0]);
-    }
-  } */
-
+ 
     function getObject(selected) {
       let filtered = props.imgCharacters.filter((e) => e.name === selected);
       if (filtered) {
@@ -48,23 +42,16 @@ const DropdownMenu = (props) => {
 
 
   async function submitChar(event) {
-    console.log("funcion submit char");
+  
     const url = `${urlAddresses.round}/${props.game.game_id}`;
-    console.log(url);
     event.stopPropagation();
     const {x,y} = getNormalizedCoords(
       props.tagginCoords,
       props.coords,
       props.W,
       props.H
-    /*   props.setNormalizeCoords */
     );
     const objCharSelect = getObject(selected);
-    props.setSelectedChar(objCharSelect);  // ver si se necesita
-    
-    console.log(objCharSelect);
-    console.log(x);
-    console.log(y);
     const bodydata = {
       char_obj: objCharSelect,
       normalize_x: x,
@@ -82,7 +69,6 @@ const DropdownMenu = (props) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           props.setMessageObj(data);
           if(data.game){
             props.setGame(data.game);
@@ -99,20 +85,6 @@ const DropdownMenu = (props) => {
     closeMenu();
     props.setClickImg(false);
   }
-
-  /* function manageAnswer(responseData) {
-    const parentDiv = document.querySelector(".bar");
-    console.log(parentDiv);
-    if (responseData.answer === "correct") {
-      let { x, y } = fromNormalizeToScreen(
-        responseData.tagX,
-        responseData.tagY,
-        props.W,
-        props.H,
-        props.coords
-      );
-    }
-  } */
 
   return (
     <>

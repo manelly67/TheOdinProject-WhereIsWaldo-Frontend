@@ -32,10 +32,10 @@ const TagTheChar = (props) => {
           <div
             key={e.id}
             style={{
-              backgroundColor: "black",
+             /*  backgroundColor: "black",
               color: "white",
               fontSize: "0.6rem",
-              border: "1px solid white",
+              border: "1px solid white", */
               zIndex: "1",
             }}
           >
@@ -45,8 +45,13 @@ const TagTheChar = (props) => {
                 role="tag"
                 style={{
                   position: "absolute",
-                  top: `${e.y}px`,
-                  left: `${e.x}px`,
+                  top: `${e.y + 5 }px`,
+                  left: `${e.x  }px`,
+                  backgroundColor: "black",
+                  border: "1px solid white",
+                  color: "yellow",
+                  fontSize: "0.6rem",
+                  fontWeight: 900,
                 }}
               >
                 {e.name}
