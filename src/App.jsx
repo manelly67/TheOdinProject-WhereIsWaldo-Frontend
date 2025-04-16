@@ -16,10 +16,10 @@ function App() {
   const name_game_1 = "Waldo In The Galactic City";
   const name_game_2 = "Oh! Waldo is not here";
 
-  const [playerName, setPlayerName] = useState(null);
   const playerId =
     readCookieValue("player_id") === null ? null : readCookieValue("player_id");
-  const player = playerId === null ? null : { id: playerId, name: playerName };
+  
+  const [player, setPlayer] = useState(null);
 
   function readCookieValue(name) {
     const value = `; ${document.cookie}`;
@@ -51,7 +51,7 @@ function App() {
       session = await getSession();
       console.log(session);
       const bodydata = { sessionId: session };
-      await fetch(urlAddresses.getplayer, {
+      await fetch(urlAddresses.createplayer, {
         method: "POST",
         credentials: "same-origin",
         headers: {
@@ -65,7 +65,7 @@ function App() {
           console.log(data);
           if (data.player) {
             const { player } = data;
-            setPlayerName(player.playername);
+            setPlayer(player);
             let now = new Date();
             let time = now.getTime();
             let expireTime = time + 1000 * 86400;
@@ -84,6 +84,22 @@ function App() {
     }
   }, [getSession]);
 
+  const updatePlayerObj = useCallback(async () => {
+    try {
+      const response = await fetch(`${urlAddresses.readplayer}/${playerId}`, {
+        method: "GET",
+      });
+      const responseData = await response.json();
+      if (responseData.player) {
+        const { player } = responseData;
+        setPlayer(player);
+      }
+    } catch (error) {
+      alert("Something was wrong. try again later");
+      console.log(error);
+    }
+  }, [playerId]);
+
   useEffect(() => {
     if (!didInit) {
       didInit = true;
@@ -93,13 +109,19 @@ function App() {
     }
   }, [playerId, getPlayer]);
 
+  useEffect(() => {
+    if (playerId !== null) {
+      updatePlayerObj();
+    }
+  }, [updatePlayerObj, playerId]);
+
   console.log(player);
 
   return (
     <>
       <ToggleTheme theme="light" />
       <h1>Where is Waldo - The Game</h1>
-
+   
       {!playerId ? (
         <>
           <div>
@@ -137,6 +159,7 @@ function App() {
           </div>
         </>
       )}
+     
     </>
   );
 }
