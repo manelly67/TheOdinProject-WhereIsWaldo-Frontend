@@ -20,6 +20,7 @@ function App() {
     readCookieValue("player_id") === null ? null : readCookieValue("player_id");
   
   const [player, setPlayer] = useState(null);
+  const [wakeUp, setWakeUp] = useState(false);
 
   function readCookieValue(name) {
     const value = `; ${document.cookie}`;
@@ -66,6 +67,7 @@ function App() {
           if (data.player) {
             const { player } = data;
             setPlayer(player);
+            setWakeUp(true);
             let now = new Date();
             let time = now.getTime();
             let expireTime = time + 1000 * 86400;
@@ -93,6 +95,7 @@ function App() {
       if (responseData.player) {
         const { player } = responseData;
         setPlayer(player);
+        setWakeUp(true);
       }
     } catch (error) {
       alert("Something was wrong. try again later");
@@ -111,6 +114,7 @@ function App() {
 
   useEffect(() => {
     if (playerId !== null) {
+      setWakeUp(false);
       updatePlayerObj();
     }
   }, [updatePlayerObj, playerId]);
@@ -122,7 +126,7 @@ function App() {
       <ToggleTheme theme="light" />
       <h1>Where is Waldo - The Game</h1>
    
-      {!playerId ? (
+      {!wakeUp ? (
         <>
           <div>
             <p>loading...</p>
