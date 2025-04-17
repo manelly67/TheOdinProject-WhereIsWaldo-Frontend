@@ -70,6 +70,7 @@ const DropdownMenu = (props) => {
         .then((res) => res.json())
         .then((data) => {
           props.setMessageObj(data);
+          props.setTagginCoords({ x: 0, y: 0 });
           if(data.game){
             props.setGame(data.game);
           }

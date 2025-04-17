@@ -52,7 +52,7 @@ const TopTen = () => {
       </Link>
       <h2>TOP TEN</h2>
       <h3>
-        GAME:<span>{gameName}</span>
+        GAME:   <span style={{fontStyle:'italic'}}>{gameName}</span>
       </h3>
       {!topTen ? (
         <div>Loading...</div>
@@ -64,7 +64,7 @@ const TopTen = () => {
               display: "flex",
               flexDirection: "column",
               justifyContent: "flex-start",
-              gap: "10px",
+              gap: "20px",
             }}
           >
             {topTen.map((r) => {
@@ -81,7 +81,7 @@ const TopTen = () => {
                       }}
                     >
                       <p style={{ maxWidth: "200px" }}>{r.player.playername}</p>
-                      <p style={{ maxWidth: "200px" }}>
+                      <p style={{ maxWidth: "400px" }}>
                         {formatScore(r.timeRecord)}
                       </p>
                     </li>

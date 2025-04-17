@@ -2,13 +2,12 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import ToggleTheme from "./ToggleTheme";
-import { mock_data_1, mock_data_2 } from "../mock_data";
-import styles from "../styles/Box.module.css";
 import TargetingBox from "./TargetinBox";
 import DropdownMenu from "./DropdownMenu";
 import TagTheChar from "./TagTheChar";
 import Message from "./Message";
 import AskForName from "./AskForName";
+import styles from "../styles/Box.module.css";
 import { moveToCoord, clickInsideImg } from "./coord";
 import { urlAddresses } from "../assets/urlAdresses";
 
@@ -27,6 +26,7 @@ const DrawingBoard = () => {
   const [game, setGame] = useState(null);
   const [messageObj, setMessageObj] = useState(null);
   const [isInTop, setIsInTop] = useState(false);
+  const [dontAskAgain, setDontAskAgain] = useState(false);
   const imgSource = game === null ? null : game.picture.src_image;
   const imgId = game === null ? null : game.picture.id_image;
   const imgCharacters = game === null ? null : game.picture.characters;
@@ -203,7 +203,9 @@ const DrawingBoard = () => {
           case true:
             setStop(true);
             if (game.player.name_player === "ANONIMOUS") {
-              checkIsInTopTen(game);
+              if (!dontAskAgain) {
+                checkIsInTopTen(game);
+              }
             }
             break;
           case false:
@@ -243,7 +245,7 @@ const DrawingBoard = () => {
             }
         }
     }
-  }, [game, checkIsInTopTen]);
+  }, [game, dontAskAgain, checkIsInTopTen]);
 
   function formatScore(score) {
     if (score) {
@@ -276,6 +278,7 @@ const DrawingBoard = () => {
                     W={W}
                     H={H}
                     tagginCoords={tagginCoords}
+                    setTagginCoords={setTagginCoords}
                     placeMenu={placeMenu}
                     dropdownMenu={dropdownMenu}
                     visible={visible}
@@ -347,7 +350,13 @@ const DrawingBoard = () => {
         <Message messageObj={messageObj} setMessageObj={setMessageObj} />
       ) : null}
 
-      {isInTop ? <AskForName game={game} setGame={setGame} /> : null}
+      {isInTop ? (
+        <AskForName
+          game={game}
+          setIsInTop={setIsInTop}
+          setDontAskAgain={setDontAskAgain}
+        />
+      ) : null}
     </>
   );
 };

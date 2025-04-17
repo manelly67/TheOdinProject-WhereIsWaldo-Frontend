@@ -7,6 +7,7 @@ const urlAddresses = {
   readplayer: `${base}/players/id`,
   createGame: `${base}/games/new`,
   round: `${base}/games/round`,
+  askForName:`${base}/players/update`,
   topTEN: `${base}/games/top-10`,
 };
 
