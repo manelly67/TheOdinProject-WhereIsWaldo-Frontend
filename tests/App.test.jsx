@@ -1,17 +1,7 @@
-import {
-  MemoryRouter,
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-
-import { describe, it, expect } from "vitest";
+import {  MemoryRouter } from "react-router-dom";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen, waitFor, act } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import toHaveStyle from "@testing-library/jest-dom";
-import mockdata from "../src/mock_data.jsx";
-
 import App from "../src/App.jsx";
-import routes from "../src/components/routes.jsx";
 
 describe("App Component", () => {
   it("display the page", () => {
@@ -59,7 +49,7 @@ describe("App Component", () => {
     await act(async () => {
      [resolve] = await mock_getPlayer.mock.calls[0];
     });
-    console.log(resolve); 
+    
     rerender(
       <MemoryRouter initialEntries={["/"]}>
         <App
@@ -70,39 +60,5 @@ describe("App Component", () => {
       </MemoryRouter>
     );
   });
-  // eL RERENDER NO ESTA FUNCIONANDO Y NO ACTUALIZA EL DOM
+ //the rerender doesnt work as expected
 });
-
-/* ESTE TEST CAMBIARLO CUANDO SE HAYA TRAIDO EL USUARIO DE LA PAGINA WEB
- 
- it("navigate to drawing board", async () => {
-    const router = createBrowserRouter(routes);
-    render(<RouterProvider router={router} />);
-
-    const user = userEvent.setup();
-
-    expect(screen.getByText(/Waldo In The Galactic City/i)).toBeInTheDocument();
-    const buttons = screen.getAllByRole("button");
-    const [,second,third] = buttons;
-
-    await user.click(second);
-
-    expect(
-      screen.getByAltText(/Waldo In The Galactic City/i)
-    ).toBeInTheDocument();
-
-    const homeLink = screen.getByText(/home/i);
-    // back to home
-    await user.click(homeLink);
-    // select other image
-    await user.click(third);
-
-    waitFor(()=>{
-      expect(
-        screen.getByAltText(/Oh! Waldo is not here/i)
-      ).toBeInTheDocument();
-  
-    });
-
-  });
-}); */

@@ -49,7 +49,7 @@ exports[`display DrawingBoard > display the page when location.state is null 1`]
       </a>
       <a
         data-discover="true"
-        href="/"
+        href="/top_ten"
         style="font-size: 1.3rem;"
       >
         TOP TEN

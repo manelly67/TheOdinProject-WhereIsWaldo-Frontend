@@ -11,7 +11,6 @@ const TopTen = () => {
     try {
       const response = await fetch(url, { method: "GET" });
       const responseData = await response.json();
-      console.log(responseData);
       if (responseData.top10) {
         setTopTen(responseData.top10);
       }
@@ -24,10 +23,8 @@ const TopTen = () => {
   useEffect(() => {
     if (location.state !== null) {
       const { img_id, gameName } = location.state;
-      console.log(img_id);
       if (gameName !== null && img_id !== null) {
         const url = `${urlAddresses.topTEN}/${img_id}`;
-        console.log(url);
         getTopTen(url);
         setGameName(gameName);
       }

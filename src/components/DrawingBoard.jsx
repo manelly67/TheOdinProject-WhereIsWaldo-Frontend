@@ -31,9 +31,7 @@ const DrawingBoard = () => {
   const imgId = game === null ? null : game.picture.id_image;
   const imgCharacters = game === null ? null : game.picture.characters;
   const score = game === null ? null : formatScore(game.timeRecord);
-  console.log(game);
-  console.log(score);
-
+  
   const width = window.innerWidth;
   const height = window.innerHeight;
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -71,7 +69,7 @@ const DrawingBoard = () => {
   }, []);
 
   const initBoard = useCallback(async () => {
-    console.log(location.state);
+  
     if (location.state !== null) {
       const { player, gameName } = location.state;
       setGameName(gameName);
@@ -177,8 +175,7 @@ const DrawingBoard = () => {
 
   useEffect(() => {
     const temp = clickInsideImg(tagginCoords, coords, endcoords);
-    console.log(temp);
-    setClickImg(temp);
+     setClickImg(temp);
   }, [tagginCoords, coords, endcoords]);
 
   useEffect(() => {

@@ -50,7 +50,6 @@ function App() {
     let session = "";
     try {
       session = await getSession();
-      console.log(session);
       const bodydata = { sessionId: session };
       await fetch(urlAddresses.createplayer, {
         method: "POST",
@@ -63,7 +62,6 @@ function App() {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           if (data.player) {
             const { player } = data;
             setPlayer(player);
@@ -119,7 +117,6 @@ function App() {
     }
   }, [updatePlayerObj, playerId]);
 
-  console.log(player);
 
   return (
     <>

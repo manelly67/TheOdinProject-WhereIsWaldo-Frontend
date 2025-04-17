@@ -40,7 +40,6 @@ const AskForName = (props) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.errors) {
           setErrors(data.errors);
         }
@@ -74,7 +73,7 @@ const AskForName = (props) => {
           <div className={`${element} ${looks}`} role="askname">
             <p>Congratulations, you are in the Top Ten</p>
             <ErrorMessage errors={errors} />
-            {!msg ? null : <p style={{color:'blue'}}>{msg}</p>}
+            {!msg ? null : <p style={{ color: "blue" }}>{msg}</p>}
             <form
               id="ask_for_name"
               action={url}

@@ -9,7 +9,7 @@ import userEvent from "@testing-library/user-event";
 
 
 import routes from "../src/components/routes.jsx";
-import {mock_data_1, mock_data_2} from "../src/mock_data.jsx";
+import {mock_data_1} from "../src/mock_data.jsx";
 import DrawingBoard from "../src/components/DrawingBoard";
 import DropdownMenu from "../src/components/DropdownMenu.jsx";
 

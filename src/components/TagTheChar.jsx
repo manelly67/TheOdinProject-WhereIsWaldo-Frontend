@@ -21,7 +21,6 @@ const TagTheChar = (props) => {
         temp.push({ id: e.id, name: e.name, found: e.found, x: e.x, y: e.y });
       }
     });
-    console.log(temp);
     setImgCharacToTag(temp);
   }, [imgCharacters, W, H, coords]);
 
@@ -32,11 +31,7 @@ const TagTheChar = (props) => {
           <div
             key={e.id}
             style={{
-             /*  backgroundColor: "black",
-              color: "white",
-              fontSize: "0.6rem",
-              border: "1px solid white", */
-              zIndex: "1",
+               zIndex: "1",
             }}
           >
             {e.found === false ? null : (

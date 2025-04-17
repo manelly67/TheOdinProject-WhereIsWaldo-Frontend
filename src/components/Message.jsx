@@ -7,8 +7,6 @@ const Message = (props) => {
   const { round_answer, message, score } = messageObj;
   const scoreText = score ? formatScore(score) : null;
 
-  console.log(props.messageObj);
-
   const deleteAfter = useCallback(() => {
     setMessageObj(null);
   }, [setMessageObj]);
