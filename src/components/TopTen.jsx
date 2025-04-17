@@ -67,9 +67,9 @@ const TopTen = () => {
             {topTen.map((r) => {
               return (
                 <>
-                  {r === null ? null : (
+                  {r === null ?  null : (
                     <li
-                      key={r.id}
+                      key={crypto.randomUUID()}
                       style={{
                         display: "flex",
                         flexDirection: "row",
