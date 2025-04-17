@@ -64,7 +64,6 @@ function App() {
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
-          // VER AGREGAR EL MENSAJE UN NUEVO JUGADOR FUE CREADO
           if (data.player) {
             const { player } = data;
             setPlayer(player);
