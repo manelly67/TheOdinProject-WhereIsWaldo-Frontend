@@ -8,6 +8,7 @@ import TargetingBox from "./TargetinBox";
 import DropdownMenu from "./DropdownMenu";
 import TagTheChar from "./TagTheChar";
 import Message from "./Message";
+import AskForName from "./AskForName";
 import { moveToCoord, clickInsideImg } from "./coord";
 import { urlAddresses } from "../assets/urlAdresses";
 
@@ -25,6 +26,7 @@ const DrawingBoard = () => {
 
   const [game, setGame] = useState(null);
   const [messageObj, setMessageObj] = useState(null);
+  const [isInTop, setIsInTop] = useState(false);
   const imgSource = game === null ? null : game.picture.src_image;
   const imgId = game === null ? null : game.picture.id_image;
   const imgCharacters = game === null ? null : game.picture.characters;
@@ -40,8 +42,7 @@ const DrawingBoard = () => {
   const [H, setH] = useState(0);
   const [tagginCoords, setTagginCoords] = useState({ x: 0, y: 0 });
   const [clickImg, setClickImg] = useState(false);
-  const [stop,setStop] = useState(false);
-
+  const [stop, setStop] = useState(false);
 
   const getData = useCallback(async (url) => {
     try {
@@ -125,6 +126,27 @@ const DrawingBoard = () => {
     }
   }, []);
 
+  const checkIsInTopTen = useCallback(async (game) => {
+    const url = `${urlAddresses.topTEN}/${game.picture.id_image}`;
+    try {
+      const response = await fetch(url);
+      const responseData = await response.json();
+      if (responseData.top10) {
+        const { top10 } = responseData;
+        top10.forEach((r) => {
+          if (r) {
+            if (r.id === game.game_id) {
+              setIsInTop(true);
+            }
+          }
+        });
+      }
+    } catch (error) {
+      alert("Something was wrong. try again later");
+      console.log(error);
+    }
+  }, []);
+
   useEffect(() => {
     if (game === null) {
       initBoard();
@@ -172,38 +194,6 @@ const DrawingBoard = () => {
     }
   }, [tagginCoords]);
 
- /* useEffect(() => {
-    document.addEventListener(
-      "click",
-      (ev) => {
-        let { movetoX, movetoY } = moveToCoord(
-          ev.clientX,
-          ev.clientY,
-          ev.pageX,
-          ev.pageY
-        );
-        setTagginCoords({ x: movetoX, y: movetoY });
-      },
-      false
-    );
-    return () => {
-      document.removeEventListener(
-        "click",
-        (ev) => {
-          let { movetoX, movetoY } = moveToCoord(
-            ev.clientX,
-            ev.clientY,
-            ev.pageX,
-            ev.pageY
-          );
-          setTagginCoords({ x: movetoX, y: movetoY });
-        },
-        false
-      );
-    };
-  }, []); 
-  */ 
-
   useEffect(() => {
     switch (game === null) {
       case true:
@@ -212,10 +202,13 @@ const DrawingBoard = () => {
         switch (game.status === "ENDED") {
           case true:
             setStop(true);
+            if (game.player.name_player === "ANONIMOUS") {
+              checkIsInTopTen(game);
+            }
             break;
           case false:
             switch (game.status === "GAMING") {
-              case true:{
+              case true: {
                 document.addEventListener(
                   "click",
                   (ev) => {
@@ -250,10 +243,10 @@ const DrawingBoard = () => {
             }
         }
     }
-  }, [game]);
+  }, [game, checkIsInTopTen]);
 
   function formatScore(score) {
-    if(score){
+    if (score) {
       const { days, hours, minutes, seconds } = score;
       let d = days ? `${days} days` : "";
       let h = hours ? `${hours} hours` : "";
@@ -338,7 +331,7 @@ const DrawingBoard = () => {
               src={imgSource}
               alt={gameName}
               className=""
-              width={width * 0.8}
+              width={width * 0.75}
               height={
                 width * 0.8 * 0.65 < height ? width * 0.8 * 0.65 : height * 0.95
               }
@@ -353,6 +346,8 @@ const DrawingBoard = () => {
       {messageObj ? (
         <Message messageObj={messageObj} setMessageObj={setMessageObj} />
       ) : null}
+
+      {isInTop ? <AskForName game={game} setGame={setGame} /> : null}
     </>
   );
 };
