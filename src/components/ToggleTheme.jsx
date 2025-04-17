@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Icon from '@mdi/react';
+import { mdiThemeLightDark } from '@mdi/js';
 
 const ToggleTheme = (props) => {
   const [theme, setTheme] = useState(props.theme);
@@ -13,6 +15,13 @@ const ToggleTheme = (props) => {
     setTheme(newTheme);
   }
 
+  /* <img
+        src="/src/assets/theme-light-dark.png"
+        alt="theme-light-dark"
+        className="iconImg"
+        width="30px"
+        height="30px"
+      ></img> */
   return (
     <button
       className="themeButton"
@@ -21,13 +30,7 @@ const ToggleTheme = (props) => {
         toggleTheme();
       }}
     >
-      <img
-        src="/src/assets/theme-light-dark.png"
-        alt="theme-light-dark"
-        className="iconImg"
-        width="30px"
-        height="30px"
-      ></img>
+      <Icon path={mdiThemeLightDark} size={1} />
     </button>
   );
 };
