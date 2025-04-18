@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./styles/index.css";
-/* import "./index.css"; */
+
 import routes from "./components/routes.jsx";
 
 // set meta description

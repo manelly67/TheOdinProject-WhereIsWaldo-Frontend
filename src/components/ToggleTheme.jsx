@@ -15,13 +15,6 @@ const ToggleTheme = (props) => {
     setTheme(newTheme);
   }
 
-  /* <img
-        src="/src/assets/theme-light-dark.png"
-        alt="theme-light-dark"
-        className="iconImg"
-        width="30px"
-        height="30px"
-      ></img> */
   return (
     <button
       className="themeButton"
