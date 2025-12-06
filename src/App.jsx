@@ -11,14 +11,14 @@ function App() {
   if (titleDiv) {
     titleDiv.textContent = "WHERE IS WALDO";
   }
- 
+
   const navigate = useNavigate();
   const name_game_1 = "Waldo In The Galactic City";
   const name_game_2 = "Oh! Waldo is not here";
 
   const playerId =
     readCookieValue("player_id") === null ? null : readCookieValue("player_id");
-  
+
   const [player, setPlayer] = useState(null);
   const [wakeUp, setWakeUp] = useState(false);
 
@@ -44,7 +44,7 @@ function App() {
       alert("Something was wrong. try again later");
       console.log(error);
     }
-  }, []); 
+  }, []);
 
   const getPlayer = useCallback(async () => {
     let session = "";
@@ -117,28 +117,36 @@ function App() {
     }
   }, [updatePlayerObj, playerId]);
 
-
   return (
     <>
       <ToggleTheme theme="light" />
       <h1>Where is Waldo - The Game</h1>
-   
+
       {!wakeUp ? (
         <>
           <div>
-            <p>loading...</p>
+            <p className="waitingMsg">
+              Please note that this project is intended for demonstration
+              purposes only. The host server may take a moment to initialize
+              after being powered on.
+            </p>
             <hr></hr>
-            <p>
-              Dear user, this is a study project, please wait 1 minute for the
-              server to wake up.
+            <p className="waitingMsg">
+              Kindly wait until the server is fully awake and responsive before
+              proceeding with any actions.
+            </p>
+            <hr></hr>
+            <p className="waitingMsg">
+              The objective of the project is to tag characters within an image
+              as part of a game.
             </p>
           </div>
         </>
       ) : (
         <>
           <div className="setOfButtons">
-          <p>For study purposes your player will last one day</p>
-          <p>and can play each game once</p>
+            <p>Your player will last one day</p>
+            <p>and can play each game once</p>
             <button
               onClick={() => {
                 navigate("/board", {
@@ -162,7 +170,6 @@ function App() {
           </div>
         </>
       )}
-     
     </>
   );
 }
