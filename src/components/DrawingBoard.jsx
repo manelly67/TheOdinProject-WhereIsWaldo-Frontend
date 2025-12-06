@@ -31,7 +31,7 @@ const DrawingBoard = () => {
   const imgId = game === null ? null : game.picture.id_image;
   const imgCharacters = game === null ? null : game.picture.characters;
   const score = game === null ? null : formatScore(game.timeRecord);
-  
+
   const width = window.innerWidth;
   const height = window.innerHeight;
   const [coords, setCoords] = useState({ x: 0, y: 0 });
@@ -69,7 +69,6 @@ const DrawingBoard = () => {
   }, []);
 
   const initBoard = useCallback(async () => {
-  
     if (location.state !== null) {
       const { player, gameName } = location.state;
       setGameName(gameName);
@@ -175,7 +174,7 @@ const DrawingBoard = () => {
 
   useEffect(() => {
     const temp = clickInsideImg(tagginCoords, coords, endcoords);
-     setClickImg(temp);
+    setClickImg(temp);
   }, [tagginCoords, coords, endcoords]);
 
   useEffect(() => {
@@ -318,10 +317,7 @@ const DrawingBoard = () => {
           <>
             <div>
               <p>loading</p>
-              <p>
-                Dear user, this is a study project, please wait 1 minute for the
-                server to wake up.
-              </p>
+              <p>please wait for the server to wake up.</p>
             </div>
           </>
         ) : (
